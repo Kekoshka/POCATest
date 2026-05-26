@@ -1,6 +1,6 @@
-﻿using РОСАTest.DataSeed;
+﻿using РОСАTest.Common.DataSeed;
 
-namespace РОСАTest.Enums
+namespace РОСАTest.Common.Enums
 {
     public static class StatusType
     {

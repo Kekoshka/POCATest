@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using РОСАTest.DTO;
+using РОСАTest.Common.DTO;
 using РОСАTest.Interfaces;
 
 namespace РОСАTest.Controllers

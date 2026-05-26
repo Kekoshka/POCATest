@@ -1,8 +1,8 @@
 ﻿using Riok.Mapperly.Abstractions;
-using РОСАTest.DTO;
+using РОСАTest.Common.DTO;
 using РОСАTest.Models;
 
-namespace РОСАTest.Mappers
+namespace РОСАTest.Common.Mappers
 {
     [Mapper]
     public static partial class StatusMapper

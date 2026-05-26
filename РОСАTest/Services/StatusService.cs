@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using РОСАTest.Common.DTO;
+using РОСАTest.Common.Mappers;
 using РОСАTest.Context;
-using РОСАTest.DTO;
-using РОСАTest.Mappers;
+using РОСАTest.Interfaces;
 
 namespace РОСАTest.Services
 {
-    public class StatusService
+    public class StatusService : IStatusService
     {
         AppDbContext _context;
         public StatusService(AppDbContext context)

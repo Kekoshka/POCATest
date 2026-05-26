@@ -2,10 +2,10 @@
 using POCATest.Common.Exceptions;
 using POCATest.Middlewares;
 using System.Reflection;
+using РОСАTest.Common.DataSeed;
 using РОСАTest.Context;
-using РОСАTest.DataSeed;
 
-namespace РОСАTest.Extensions
+namespace РОСАTest.Common.Extensions
 {
     public static class ServicesExtensions
     {

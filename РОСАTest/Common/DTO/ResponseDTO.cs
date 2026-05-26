@@ -1,4 +1,4 @@
-﻿namespace РОСАTest.DTO
+﻿namespace РОСАTest.Common.DTO
 {
     public record class GetRequestsDTOResponse(
         Guid Id,
@@ -35,4 +35,9 @@
     public record class RoleDTOResponse(
         Guid Id,
         string Name);
+
+    public record class LoginDTOResponse(
+        string AccessToken,
+        string FIO,
+        Guid Role);
 }

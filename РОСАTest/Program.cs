@@ -1,4 +1,4 @@
-using ÐÎÑÀTest.Extensions;
+using ÐÎÑÀTest.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

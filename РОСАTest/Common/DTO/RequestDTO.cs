@@ -1,4 +1,4 @@
-﻿namespace РОСАTest.DTO
+﻿namespace РОСАTest.Common.DTO
 {
     public record class CreateRequestDTORequest(
         string Note,
@@ -13,4 +13,8 @@
         string RequestReason,
         int Quantity,
         Guid CertificateTypeId);
+
+    public record class LoginDTORequest(
+        string Username,
+        string Password);
 }

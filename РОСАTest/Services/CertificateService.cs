@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using POCATest.Common.Exceptions;
+using РОСАTest.Common.DTO;
+using РОСАTest.Common.Enums;
+using РОСАTest.Common.Mappers;
 using РОСАTest.Context;
-using РОСАTest.DTO;
-using РОСАTest.Enums;
 using РОСАTest.Interfaces;
-using РОСАTest.Mappers;
 using РОСАTest.Models;
 
 namespace РОСАTest.Services
@@ -38,7 +38,7 @@ namespace РОСАTest.Services
                 cr.Request.StatusId == StatusType.Created ||
                 cr.Request.StatusId == StatusType.InProgress)
                 .Where(cr => cr.Request.UserId == userId)
-                .Where(cr => cr.CertificateTypeId != Enums.CertificateType.Other);
+                .Where(cr => cr.CertificateTypeId != Common.Enums.CertificateType.Other);
             _context.Requests.Add(request);
             await _context.SaveChangesAsync(cancellationToken);
             return request.Id;

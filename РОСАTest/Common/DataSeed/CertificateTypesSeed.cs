@@ -1,6 +1,6 @@
 ﻿using РОСАTest.Models;
 
-namespace РОСАTest.DataSeed
+namespace РОСАTest.Common.DataSeed
 {
     public class CertificateTypesSeed
     {

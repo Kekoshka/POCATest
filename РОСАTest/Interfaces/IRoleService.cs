@@ -1,4 +1,4 @@
-﻿using РОСАTest.DTO;
+﻿using РОСАTest.Common.DTO;
 
 namespace РОСАTest.Interfaces
 {

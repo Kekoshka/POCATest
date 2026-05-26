@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
+using РОСАTest.Common.DTO;
+using РОСАTest.Common.Mappers;
 using РОСАTest.Context;
-using РОСАTest.DTO;
-using РОСАTest.Mappers;
+using РОСАTest.Interfaces;
 
 namespace РОСАTest.Services
 {
-    public class RoleService
+    public class RoleService : IRoleService
     {
         AppDbContext _context;
         public RoleService(AppDbContext context)
