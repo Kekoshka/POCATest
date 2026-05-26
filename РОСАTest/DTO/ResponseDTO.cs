@@ -31,4 +31,8 @@
     public record class StatusDTOResponse(
         Guid Id,
         string Name);
+
+    public record class RoleDTOResponse(
+        Guid Id,
+        string Name);
 }
