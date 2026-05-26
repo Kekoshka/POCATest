@@ -4,7 +4,7 @@ namespace РОСАTest.Common.DataSeed
 {
     public class CertificateTypesSeed
     {
-        public static readonly List<Status> CertificateTypes = new()
+        public static readonly List<CertificateType> CertificateTypes = new()
         {
             new()
             {

@@ -4,7 +4,7 @@ namespace РОСАTest.Common.DataSeed
 {
     public class RolesSeed
     {
-        public static readonly List<Status> Roles = new()
+        public static readonly List<Role> Roles = new()
         {
             new()
             {

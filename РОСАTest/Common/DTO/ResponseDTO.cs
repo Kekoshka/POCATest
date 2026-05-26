@@ -14,13 +14,15 @@
 
     public record class CertificateResponseLightDTO(
         Guid Id,
-        string FileName,
-        Guid CertificateRequestId);
+        string? FileName,
+        Guid CertificateRequestId,
+        bool IsPhysical);
 
     public record class CertificateResponseDTO(
         Guid Id,
-        byte[] File,
-        string FileName,
+        byte[]? File,
+        string? FileName,
+        bool IsPhysical,
         Guid CertificateRequestId);
     public record class CertificateRequestDTOResponse(
         Guid Id,

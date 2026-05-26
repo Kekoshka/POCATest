@@ -23,9 +23,13 @@ namespace РОСАTest.Common.Extensions
                 {
                     var context = (AppDbContext)dbContext;
 
-                    if (context.Statuses.Any())
+                    if (context.Statuses.Any() ||
+                        context.Roles.Any() ||
+                        context.CertificateTypes.Any())
                         return;
 
+                    context.CertificateTypes.AddRange(CertificateTypesSeed.CertificateTypes);
+                    context.Roles.AddRange(RolesSeed.Roles);
                     context.Statuses.AddRange(StatusesSeed.Statuses);
                     context.SaveChanges();
                 });
