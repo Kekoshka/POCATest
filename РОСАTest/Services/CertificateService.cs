@@ -33,6 +33,12 @@ namespace РОСАTest.Services
                         return cr;
                     }).ToList()
             };
+            var existedCerts = _context.CertificateRequests
+                .Where(cr =>
+                cr.Request.StatusId == StatusType.Created ||
+                cr.Request.StatusId == StatusType.InProgress)
+                .Where(cr => cr.Request.UserId == userId)
+                .Where(cr => cr.CertificateTypeId != Enums.CertificateType.Other);
             _context.Requests.Add(request);
             await _context.SaveChangesAsync(cancellationToken);
             return request.Id;

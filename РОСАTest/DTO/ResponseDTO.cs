@@ -27,4 +27,8 @@
         string RequestReason,
         int Quantity,
         Guid CertificateTypeId);
+
+    public record class StatusDTOResponse(
+        Guid Id,
+        string Name);
 }

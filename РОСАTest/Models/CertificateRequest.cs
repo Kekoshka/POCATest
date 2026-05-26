@@ -9,5 +9,6 @@
         public Guid RequestId { get; set; }
         public CertificateType CertificateType { get; set; }
         public Request Request { get; set; }
+        public ICollection<CertificateResponse> CertificateResponses { get; set; }
     }
 }
