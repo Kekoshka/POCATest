@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using РОСАTest.Interfaces;
-using РОСАTest.Models;
 
 namespace РОСАTest.Controllers
 {
     [Route("api/roles")]
     [ApiController]
+    [Authorize]
     public class RoleController : ControllerBase
     {
         IRoleService _roleService;

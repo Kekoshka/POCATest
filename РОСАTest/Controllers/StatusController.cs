@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography.X509Certificates;
+﻿using Microsoft.AspNetCore.Mvc;
 using РОСАTest.Interfaces;
 
 namespace РОСАTest.Controllers
 {
     [Route("api/statuses")]
     [ApiController]
+    [Authorize]
     public class StatusController : ControllerBase
     {
         IStatusService _statusService;

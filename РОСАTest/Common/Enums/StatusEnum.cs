@@ -2,7 +2,7 @@
 
 namespace РОСАTest.Common.Enums
 {
-    public static class StatusType
+    public static class StatusEnum
     {
         public static readonly Guid Created = StatusesSeed.Statuses[0].Id;
         public static readonly Guid InProgress = StatusesSeed.Statuses[1].Id;

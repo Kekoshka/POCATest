@@ -3,13 +3,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using РОСАTest.Common.DTO;
 using РОСАTest.Common.Options;
-using РОСАTest.Context;
+using РОСАTest.Interfaces;
 
 namespace РОСАTest.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         JWTOptions _jwtOptions;
         public AuthService(IOptions<JWTOptions> jwtOptions)

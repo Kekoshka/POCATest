@@ -37,7 +37,12 @@
         string Name);
 
     public record class LoginDTOResponse(
+        Guid Id,
         string AccessToken,
         string FIO,
         Guid Role);
+    public record class RegisterDTOResponse(
+    Guid Id,
+    string AccessToken,
+    Guid RoleId);
 }

@@ -23,6 +23,11 @@ namespace РОСАTest.Common.DataSeed
             },
             new()
             {
+                Id = Guid.Parse("541dde31-182d-4df4-a95d-3189ad961859"),
+                Name = "PartialyCompleted"
+            },
+            new()
+            {
                 Id = Guid.Parse("e5275423-1dcb-4673-8237-e8e219548d1b"),
                 Name = "Revoked"
             },

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.X509Certificates;
 using РОСАTest.Common.DTO;
 using РОСАTest.Common.Mappers;
 using РОСАTest.Context;
@@ -19,7 +18,7 @@ namespace РОСАTest.Services
         {
             var roles = await _context.Roles
                 .AsNoTracking()
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
             return roles.ToRoleDTOResponses();
         }
     }

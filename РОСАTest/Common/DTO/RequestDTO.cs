@@ -6,8 +6,8 @@
 
     public record class CreateResponseDTORequest(
         Guid CertificateRequestId,
-        byte[] File,
-        string FileName);
+        byte[]? File,
+        string? FileName);
 
     public record class CertificateRequestDTO(
         string RequestReason,
@@ -15,6 +15,12 @@
         Guid CertificateTypeId);
 
     public record class LoginDTORequest(
-        string Username,
+        string Login,
         string Password);
+
+    public record class RegisterDTORequest(
+        string Login,
+        string Password,
+        string FIO);
+
 }
