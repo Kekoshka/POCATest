@@ -1,8 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using POCATest.Common.Exceptions;
 using POCATest.Middlewares;
 using System.Reflection;
+using System.Text;
 using РОСАTest.Common.DataSeed;
+using РОСАTest.Common.Options;
 using РОСАTest.Context;
 
 namespace РОСАTest.Common.Extensions
@@ -34,6 +38,37 @@ namespace РОСАTest.Common.Extensions
                     context.SaveChanges();
                 });
             });
+        }
+
+        public static void AddAuthorization(this IServiceCollection services, IConfiguration configuration)
+        {
+            var jwtSettings = configuration
+                .GetSection(nameof(JWTOptions))
+                .Get<JWTOptions>();
+
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+                    };
+                });
+
+            services.AddAuthorization();
+        }
+
+        public static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<JWTOptions>(configuration.GetSection(nameof(JWTOptions)));
         }
 
         public static IApplicationBuilder UseExceptionHandling(this IApplicationBuilder builder)
