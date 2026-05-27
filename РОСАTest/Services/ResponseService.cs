@@ -28,8 +28,6 @@ namespace РОСАTest.Services
                 .ThenInclude(cr => cr.Request)
                 .Where(cr => cr.CertificateRequest.Request.UserId == _userService.GetUserId())
                 .ToListAsync(cancellationToken);
-            if (responses is null)
-                throw new NotFoundException();
 
             return responses.ToCertificateResponseLightDTOs();
         }
@@ -97,6 +95,5 @@ namespace РОСАTest.Services
             await _context.SaveChangesAsync(cancellationToken);
             return responses.Select(r => r.Id).ToList();
         }
-
     }
 }

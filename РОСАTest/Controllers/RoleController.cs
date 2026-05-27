@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using РОСАTest.Interfaces;
 
 namespace РОСАTest.Controllers
 {
-    [Route("api/roles")]
+    [Route("api/roles/")]
     [ApiController]
     [Authorize]
     public class RoleController : ControllerBase

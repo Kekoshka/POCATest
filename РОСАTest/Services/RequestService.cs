@@ -23,6 +23,16 @@ namespace РОСАTest.Services
 
         public async Task<Guid> CreateRequestAsync(CreateRequestDTORequest dto, CancellationToken cancellationToken)
         {
+            var existedCerts = await _context.CertificateRequests
+                .Where(cr =>
+                (cr.Request.StatusId == StatusEnum.Created ||
+                cr.Request.StatusId == StatusEnum.InProgress) &&
+                cr.Request.UserId == _userService.GetUserId() &&
+                cr.CertificateTypeId != CertificateTypeEnum.Other)
+                .ToListAsync();
+            if (existedCerts.Count > 0)
+                throw new ConflictException("Similar request already exists");
+            
             Request request = new()
             {
                 Id = Guid.NewGuid(),
@@ -33,16 +43,11 @@ namespace РОСАTest.Services
                     .ToDomain()
                     .Select(cr =>
                     {
-                        cr.Id = new Guid();
+                        cr.Id = Guid.NewGuid();
                         return cr;
                     }).ToList()
             };
-            var existedCerts = _context.CertificateRequests
-                .Where(cr =>
-                (cr.Request.StatusId == StatusEnum.Created ||
-                cr.Request.StatusId == StatusEnum.InProgress) &&
-                cr.Request.UserId == _userService.GetUserId() &&
-                cr.CertificateTypeId != CertificateTypeEnum.Other);
+
             _context.Requests.Add(request);
             await _context.SaveChangesAsync(cancellationToken);
             return request.Id;
@@ -70,8 +75,7 @@ namespace РОСАTest.Services
                 .Include(r => r.CertificateRequests)
                 .Where(r => r.UserId == _userService.GetUserId())
                 .ToListAsync(cancellationToken);
-            if (requests is null)
-                throw new NotFoundException();
+            
             return requests.ToGetRequestsDTOResponses();
         }
 
@@ -83,8 +87,7 @@ namespace РОСАTest.Services
                     r.StatusId == StatusEnum.Created ||
                     r.StatusId == StatusEnum.InProgress)
                 .ToListAsync(cancellationToken);
-            if (requests is null)
-                throw new NotFoundException();
+            
             return requests.ToGetRequestsDTOResponses();
         }
 

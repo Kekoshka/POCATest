@@ -4,6 +4,6 @@ namespace РОСАTest.Interfaces
 {
     public interface IStatusService
     {
-        Task<List<StatusDTOResponse>> GetStatuses(CancellationToken cancellationToken);
+        Task<List<StatusDTOResponse>> GetStatusesAsync(CancellationToken cancellationToken);
     }
 }

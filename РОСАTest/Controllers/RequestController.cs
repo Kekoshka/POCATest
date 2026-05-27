@@ -6,7 +6,7 @@ using РОСАTest.Interfaces;
 
 namespace РОСАTest.Controllers
 {
-    [Route("api/requests")]
+    [Route("api/requests/")]
     [ApiController]
     [Authorize]
     public class RequestController : ControllerBase
@@ -24,15 +24,16 @@ namespace РОСАTest.Controllers
             return Ok(requestId);
         }
 
-        [HttpPatch("/requests/{requestId}/statuses/{statusId}")]
+        [HttpPatch("{requestId}/statuses/{statusId}")]
+        [Authorize(Roles = $"{nameof(RolesEnum.Accountant)}")]
         public async Task<IActionResult> ChangeRequestStatusAsync(Guid requestId, Guid statusId, CancellationToken cancellationToken)
         {
             await _requestService.ChangeRequestStatusAsync(requestId, statusId, cancellationToken);
             return NoContent();
         }
 
-        [HttpPatch("/requests/{requestId}/statuses/revoked")]
-        public async Task<IActionResult> RevokeRequestAsync(Guid requestId, Guid statusId, CancellationToken cancellationToken)
+        [HttpPatch("{requestId}/statuses/revoked")]
+        public async Task<IActionResult> RevokeRequestAsync(Guid requestId, CancellationToken cancellationToken)
         {
             await _requestService.ChangeRequestStatusAsync(requestId, StatusEnum.Revoked, cancellationToken);
             return NoContent();
@@ -46,7 +47,7 @@ namespace РОСАTest.Controllers
             return Ok(requests);
         }
 
-        [HttpGet("/active")]
+        [HttpGet("active")]
         [Authorize(Roles = $"{nameof(RolesEnum.Accountant)}")]
         public async Task<IActionResult> GetActiveRequestsAsync(CancellationToken cancellationToken)
         {

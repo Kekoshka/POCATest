@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using РОСАTest.Interfaces;
 
 namespace РОСАTest.Controllers
 {
-    [Route("api/statuses")]
+    [Route("api/statuses/")]
     [ApiController]
     [Authorize]
     public class StatusController : ControllerBase
@@ -17,7 +18,7 @@ namespace РОСАTest.Controllers
         [HttpGet]
         public async Task<IActionResult> GetStatusesAsync(CancellationToken cancellationToken)
         {
-            var statuses = await _statusService.GetStatuses(cancellationToken);
+            var statuses = await _statusService.GetStatusesAsync(cancellationToken);
             return Ok(statuses);
         }
     }

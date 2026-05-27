@@ -12,7 +12,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.RegisterExecutingAsseblyServices();
 builder.Services.UsePostgreSql(builder.Configuration);
-builder.Services.Configure<JWTOptions>(builder.Configuration);
+builder.Services.ConfigureOptions(builder.Configuration);
 builder.Services.AddAuthorization(builder.Configuration);
 
 var app = builder.Build();
@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseExceptionHandling();
+//app.UseExceptionHandling();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

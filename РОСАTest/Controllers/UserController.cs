@@ -4,7 +4,7 @@ using РОСАTest.Interfaces;
 
 namespace РОСАTest.Controllers
 {
-    [Route("api/users")]
+    [Route("api/users/")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -13,17 +13,17 @@ namespace РОСАTest.Controllers
         {
             _userService = userService;
         }
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> LoginAsync(LoginDTORequest request, CancellationToken cancellationToken)
         {
-            var response = _userService.LoginAsync(request,cancellationToken);
+            var response = await _userService.LoginAsync(request,cancellationToken);
             return Ok(response);
         }
 
-        [HttpPost("/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync(RegisterDTORequest request, CancellationToken cancellationToken)
         {
-            var response = _userService.RegisterAsync(request, cancellationToken);
+            var response = await _userService.RegisterAsync(request, cancellationToken);
             return Ok(response);
         }
     }

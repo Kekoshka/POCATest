@@ -9,7 +9,7 @@ namespace РОСАTest.Common.Mappers
     {
         public static partial RoleDTOResponse ToRoleDTOResponse(this Role value);
 
-        public static partial List<RoleDTOResponse> ToRoleDTOResponses(this IEnumerable<Role> value) =>
+        public static List<RoleDTOResponse> ToRoleDTOResponses(this IEnumerable<Role> value) =>
             value.Select(ToRoleDTOResponse).ToList();
 
     }

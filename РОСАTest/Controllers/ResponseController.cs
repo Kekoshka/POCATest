@@ -6,7 +6,7 @@ using РОСАTest.Interfaces;
 
 namespace РОСАTest.Controllers
 {
-    [Route("api/responses")]
+    [Route("api/responses/")]
     [ApiController]
     [Authorize]
     public class ResponseController : ControllerBase
@@ -24,7 +24,7 @@ namespace РОСАTest.Controllers
             return Ok(responses);
         }
 
-        [HttpGet("/{responseId}")]
+        [HttpGet("{responseId}")]
         public async Task<IActionResult> GetCertificateByIdAsync(Guid responseId, CancellationToken cancellationToken)
         {
             var certificate = await _responseService.GetResponseByIdAsync(responseId, cancellationToken);

@@ -9,7 +9,7 @@ namespace РОСАTest.Common.Mappers
     {
         public static partial StatusDTOResponse ToStatusDTOResponse(this Status value);
 
-        public static partial List<StatusDTOResponse> ToStatusDTOResponse(this IEnumerable<Status> value) =>
+        public static List<StatusDTOResponse> ToStatusDTOResponse(this IEnumerable<Status> value) =>
             value.Select(ToStatusDTOResponse).ToList();
     }
 }

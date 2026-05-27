@@ -14,7 +14,7 @@ namespace РОСАTest.Services
             _context = context;
         }
 
-        public async Task<List<StatusDTOResponse>> GetStatuses(CancellationToken cancellationToken)
+        public async Task<List<StatusDTOResponse>> GetStatusesAsync(CancellationToken cancellationToken)
         {
             var statuses = await _context.Statuses
                 .AsNoTracking()

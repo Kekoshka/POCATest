@@ -32,6 +32,7 @@ namespace РОСАTest.Services
         {
             var user = await _context.Users
                 .AsNoTracking()
+                .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Login == request.Login,cancellationToken);
             if (user is null)
                 throw new UnauthorizedException("Invalid login or password");
@@ -51,7 +52,6 @@ namespace РОСАTest.Services
         public async Task<RegisterDTOResponse> RegisterAsync(RegisterDTORequest request, CancellationToken cancellationToken)
         {
             var existingUser = await _context.Users
-                .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Login == request.Login, cancellationToken);
             if (existingUser is not null)
                 throw new ConflictException("User with such data already exists");
@@ -61,7 +61,7 @@ namespace РОСАTest.Services
                 Id = Guid.NewGuid(),
                 FIO = request.FIO,
                 Login = request.Login,
-                Password = request.Password,
+                Password = _hashService.Hash(request.Password),
                 RoleId = RolesEnum.Employee
             };
             _context.Users.Add(user);
