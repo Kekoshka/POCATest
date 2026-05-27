@@ -36,6 +36,10 @@
     public record class RoleDTOResponse(
         Guid Id,
         string Name);
+    public record class CertificateTypeDTOResponse(
+    Guid Id,
+    string Name);
+
 
     public record class LoginDTOResponse(
         Guid Id,
