@@ -20,7 +20,6 @@
 
     public record class CertificateResponseDTO(
         Guid Id,
-        byte[]? File,
         string? FileName,
         bool IsPhysical,
         Guid CertificateRequestId);

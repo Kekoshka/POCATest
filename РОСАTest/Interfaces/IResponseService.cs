@@ -7,5 +7,6 @@ namespace РОСАTest.Interfaces
         Task<List<CertificateResponseLightDTO>> GetResponsesAsync(CancellationToken cancellationToken);
         Task<CertificateResponseDTO> GetResponseByIdAsync(Guid certificateResponseId, CancellationToken cancellationToken);
         Task<List<Guid>> CreateResponseAsync(List<CreateResponseDTORequest> dtos, CancellationToken cancellationToken);
+        Task<(byte[] fileBytes, string fileName)> GetResponseFileAsync(Guid responseId, CancellationToken cancellationToken);
     }
 }

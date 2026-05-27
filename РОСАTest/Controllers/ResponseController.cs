@@ -25,15 +25,29 @@ namespace РОСАTest.Controllers
         }
 
         [HttpGet("{responseId}")]
-        public async Task<IActionResult> GetCertificateByIdAsync(Guid responseId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetResponseByIdAsync(
+            Guid responseId,
+            CancellationToken cancellationToken)
         {
-            var certificate = await _responseService.GetResponseByIdAsync(responseId, cancellationToken);
-            return Ok(certificate);
+            var response = await _responseService.GetResponseByIdAsync(responseId, cancellationToken);
+            return Ok(response);
+        }
+
+
+        [HttpGet("{responseId}/file")]
+        public async Task<IActionResult> DownloadFileAsync(
+            Guid responseId,
+            CancellationToken cancellationToken)
+        {
+            var (fileBytes, fileName) = await _responseService.GetResponseFileAsync(responseId, cancellationToken);
+            return File(fileBytes, "application/octet-stream", fileName);
         }
 
         [HttpPost]
         [Authorize(Roles = $"{nameof(RolesEnum.Accountant)}")]
-        public async Task<IActionResult> CreateResponseAsync(List<CreateResponseDTORequest> dto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateResponseAsync(
+            [FromForm] List<CreateResponseDTORequest> dto, 
+            CancellationToken cancellationToken)
         {
             var responseIds = await _responseService.CreateResponseAsync(dto, cancellationToken);
             return Ok(responseIds);

@@ -9,8 +9,6 @@ namespace РОСАTest.Common.Mappers
     {
         public static partial CertificateRequest ToDomain(this CertificateRequestDTO value);
 
-        public static partial CertificateResponse ToDomain(this CreateResponseDTORequest value);
-
         [MapProperty(nameof(Request.CertificateRequests), nameof(GetRequestsDTOResponse.CertificateRequests))]
         public static partial GetRequestsDTOResponse ToGetRequestsDTOResponse(this Request value);
 
@@ -18,6 +16,7 @@ namespace РОСАTest.Common.Mappers
 
         public static partial CertificateResponseLightDTO ToCertificateResponseLightDTO(this CertificateResponse value);
 
+        [MapperIgnoreSource(nameof(CertificateResponse.File))]
         public static partial CertificateResponseDTO ToCertificateResponseDTO(this CertificateResponse value);
 
         public static List<GetRequestsDTOResponse> ToGetRequestsDTOResponses(this IEnumerable<Request> value)=>
@@ -29,14 +28,9 @@ namespace РОСАTest.Common.Mappers
         public static List<CertificateRequest> ToDomain(this IEnumerable<CertificateRequestDTO> value) =>
             value.Select(ToDomain).ToList();
 
-        public static List<CertificateResponse> ToDomain(this IEnumerable<CreateResponseDTORequest> value) =>
-            value.Select(ToDomain).ToList();
-
         public static GetResponsesDTOResponse ToGetResponsesDTOResponse(this Request value) =>
             new GetResponsesDTOResponse(
                 value.Id,
                 value.CertificateResponses.ToCertificateResponseLightDTOs());
-
-
     }
 }

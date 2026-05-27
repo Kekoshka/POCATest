@@ -6,9 +6,8 @@
 
     public record class CreateResponseDTORequest(
         Guid CertificateRequestId,
-        byte[]? File,
-        string? FileName,
-        bool IsPhysical);
+        bool IsPhysical,
+        IFormFile File);
 
     public record class CertificateRequestDTO(
         string RequestReason,

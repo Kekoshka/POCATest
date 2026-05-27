@@ -83,6 +83,7 @@ namespace РОСАTest.Services
         {
             var requests = await _context.Requests
                 .AsNoTracking()
+                .Include(c => c.CertificateRequests)
                 .Where(r =>
                     r.StatusId == StatusEnum.Created ||
                     r.StatusId == StatusEnum.InProgress)

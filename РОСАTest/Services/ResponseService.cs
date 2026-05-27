@@ -5,6 +5,7 @@ using РОСАTest.Common.Enums;
 using РОСАTest.Common.Mappers;
 using РОСАTest.Context;
 using РОСАTest.Interfaces;
+using РОСАTest.Models;
 
 namespace РОСАTest.Services
 {
@@ -17,7 +18,7 @@ namespace РОСАTest.Services
             IUserService userService)
         {
             _context = context;
-            _userService = userService; 
+            _userService = userService;
         }
 
         public async Task<List<CertificateResponseLightDTO>> GetResponsesAsync(CancellationToken cancellationToken)
@@ -31,7 +32,7 @@ namespace РОСАTest.Services
 
             return responses.ToCertificateResponseLightDTOs();
         }
-        
+
         public async Task<CertificateResponseDTO> GetResponseByIdAsync(Guid certificateResponseId, CancellationToken cancellationToken)
         {
             var response = await _context.CertificateResponses
@@ -43,29 +44,71 @@ namespace РОСАTest.Services
             return response.ToCertificateResponseDTO();
         }
 
-        public async Task<List<Guid>> CreateResponseAsync(List<CreateResponseDTORequest> dtos,CancellationToken cancellationToken)
+        public async Task<(byte[] fileBytes, string fileName)> GetResponseFileAsync(
+            Guid responseId,
+            CancellationToken cancellationToken)
         {
-            var certificateRequestIds = dtos.Select(d => d.CertificateRequestId);
+            var response = await _context.CertificateResponses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(cr => cr.Id == responseId, cancellationToken)
+                ?? throw new NotFoundException();
+
+            if (response.IsPhysical || response.File is null)
+                throw new BadRequestException("Certificate is physical");
+
+            return (response.File, response.FileName ?? "file");
+        }
+
+
+        public async Task<List<Guid>> CreateResponseAsync(
+            List<CreateResponseDTORequest> dtos,
+            CancellationToken cancellationToken)
+        {
+            var processedDtos = await Task.WhenAll(dtos.Select(async dto =>
+            {
+                byte[]? fileBytes = null;
+                string? fileName = null;
+
+                if (dto.File is not null)
+                {
+                    using var ms = new MemoryStream();
+                    await dto.File.CopyToAsync(ms, cancellationToken);
+                    fileBytes = ms.ToArray();
+                    fileName = Path.GetFileName(dto.File.FileName);
+                }
+
+                return (dto.CertificateRequestId, dto.IsPhysical, fileBytes, fileName);
+            }));
+
+            var certificateRequestIds = processedDtos.Select(d => d.CertificateRequestId);
             var certificateRequests = await _context.CertificateRequests
                 .Include(cr => cr.CertificateResponses)
                 .Include(cr => cr.Request)
                 .Where(cr => certificateRequestIds.Contains(cr.Id))
                 .ToListAsync(cancellationToken);
 
-            var responses = dtos.Select(dto =>
+            var responses = processedDtos.Select(dto =>
             {
-                var certificateRequest = certificateRequests.First(cr => cr.Id == dto.CertificateRequestId);
+                var certificateRequest = certificateRequests
+                    .First(cr => cr.Id == dto.CertificateRequestId);
                 var existing = certificateRequest.CertificateResponses.FirstOrDefault();
+
                 if (existing is not null)
                 {
-                    existing.File = dto.File;
-                    existing.FileName = dto.FileName;
+                    existing.File = dto.fileBytes;
+                    existing.FileName = dto.fileName;
                     existing.IsPhysical = dto.IsPhysical;
                     return existing;
                 }
 
-                var newResponse = dto.ToDomain();
-                newResponse.Id = Guid.NewGuid();
+                var newResponse = new CertificateResponse
+                {
+                    Id = Guid.NewGuid(),
+                    CertificateRequestId = dto.CertificateRequestId,
+                    IsPhysical = dto.IsPhysical,
+                    File = dto.fileBytes,
+                    FileName = dto.fileName,
+                };
                 _context.CertificateResponses.Add(newResponse);
                 return newResponse;
             }).ToList();
@@ -75,19 +118,19 @@ namespace РОСАTest.Services
                 .DistinctBy(r => r.Id)
                 .ToList();
 
-            foreach(var request in requests)
+            foreach (var request in requests)
             {
                 var allCertificateRequests = await _context.CertificateRequests
                     .Include(cr => cr.CertificateResponses)
                     .Where(cr => cr.RequestId == request.Id)
                     .ToListAsync(cancellationToken);
 
-                var totalElectronic = allCertificateRequests.Count();
-                var respondedElectronic = allCertificateRequests.Count(cr =>
-                cr.CertificateResponses.Any(r => !r.IsPhysical) ||
-                responses.Any(r => r.CertificateRequestId == cr.Id && !r.IsPhysical));
+                var total = allCertificateRequests.Count;
+                var responded = allCertificateRequests.Count(cr =>
+                    cr.CertificateResponses.Any() ||
+                    responses.Any(r => r.CertificateRequestId == cr.Id));
 
-                request.StatusId = respondedElectronic == totalElectronic
+                request.StatusId = responded == total
                     ? StatusEnum.Completed
                     : StatusEnum.PartialyCompleted;
             }

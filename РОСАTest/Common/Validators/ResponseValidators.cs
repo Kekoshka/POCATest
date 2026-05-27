@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.Text.RegularExpressions;
 using РОСАTest.Common.DTO;
 
 namespace РОСАTest.Common.Validators
@@ -16,25 +17,20 @@ namespace РОСАTest.Common.Validators
             When(x => !x.IsPhysical, () =>
             {
                 RuleFor(x => x.File)
-                    .NotNull().WithMessage("Для электронной справки файл обязателей")
+                    .NotNull().WithMessage("Файл обязателен для электронной справки")
                     .Must(f => f!.Length > 0).WithMessage("Файл не может быть пустым")
-                    .Must(f => f!.Length <= 50 * 1024 * 1024)
-                    .WithMessage("Размер файла не может превышать 50 МБ");
-
-                RuleFor(x => x.FileName)
-                    .NotEmpty().WithMessage("Имя файла обязательно для электронной справки")
-                    .MaximumLength(255).WithMessage("Имя файла не может превышать 255 символов")
-                    .Matches(@"^[\w\-. ]+\.(doc|docx|xlsx|png|jpe?g|zip|7z|pdf)$")
-                    .WithMessage("Недопустимое расширение (разрешены: doc, docx, xlsx, png, jpeg, zip, 7z, pdf)");
+                    .Must(f => f!.Length <= 10 * 1024 * 1024)
+                    .WithMessage("Размер файла не может превышать 10 МБ")
+                    .Must(f => Regex.IsMatch(
+                        f!.FileName,
+                        @"^[\w\-. ]+\.(doc|docx|xlsx|png|jpe?g|zip|7z|pdf)$"))
+                    .WithMessage("Недопустимое расширение");
             });
 
             When(x => x.IsPhysical, () =>
             {
                 RuleFor(x => x.File)
                     .Null().WithMessage("Бумажная справка не должна содержать файл");
-
-                RuleFor(x => x.FileName)
-                    .Null().WithMessage("Бумажная справка не должна содержать имя файла");
             });
         }
     }
